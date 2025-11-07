@@ -1,0 +1,32 @@
+import { createBrowserRouter } from 'react-router-dom'
+import Main from '../layouts/Main'
+import Home from '../pages/Home/Home'
+import Single from '../pages/single-product/single'
+import ErrorPage from '../pages/ErrorPage'
+// import Login from '../pages/Login/Login'
+// import SignUp from '../pages/SignUp/SignUp'
+// import RoomDetails from '../components/RoomDetails/RoomDetails'
+// import PrivateRoute from '../components/Shared/PrivateRoute'
+// import {  getRoom } from '../apis/rooms'
+
+
+export const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Main />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: '/',
+        element: <Home/>
+      },
+      {
+        path:'details/:id',
+        element: <Single/>
+      }
+     
+    ],
+  },
+  // { path: '/login', element: <Login /> },
+  // { path: '/signup', element: <SignUp /> },
+])
