@@ -78,8 +78,8 @@ const Navbar = () => {
               <Link
                 key={index}
                 to={item.link}
-                className={`px-6 py-1 text-lg font-medium hover:text-yellow-300 ${
-                  location.pathname === item.link ? 'text-yellow-200' : 'text-white'
+                className={`px-6 py-1 text-lg font-medium hover:text-menuhover ${
+                  location.pathname === item.link ? 'text-menucolor' : 'text-white'
                 }`}
               >
                 {item.label}

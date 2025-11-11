@@ -5,6 +5,7 @@ import Loader from "../../components/Shared/Loader";
 import Button from "../../components/Button/Button";
 import toast from "react-hot-toast";
 import ReactLink from '../../components/Button/ReactLink'
+import CategorySlider from "../../components/CategorySlider";
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -32,7 +33,8 @@ const Home = () => {
   }
   return (
     <Container>
-      <div className="mt-10">
+      <div className="mt-7">
+        <CategorySlider/>
         <h1>WooCommerce Products</h1>
         <div className="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-2 gap-5">
           {products?.map((p) => (
