@@ -4,7 +4,7 @@ import Container from "../../components/Shared/Container"
 import Loader from "../../components/Shared/Loader";
 import Button from "../../components/Button/Button";
 import toast from "react-hot-toast";
-import { Link, redirect } from "react-router-dom";
+import ReactLink from '../../components/Button/ReactLink'
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -24,13 +24,6 @@ const Home = () => {
   }, []);
 
 
-  const ProductDetails = (id) => {
-    console.log(id);
-    if (id) {
-      redirect('details/')
-      toast.success('Product Is: ' + id)
-    }
-  }
 
   console.log(products);
 
@@ -39,7 +32,7 @@ const Home = () => {
   }
   return (
     <Container>
-      <div>
+      <div className="mt-10">
         <h1>WooCommerce Products</h1>
         <div className="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-2 gap-5">
           {products?.map((p) => (
@@ -47,19 +40,18 @@ const Home = () => {
               <img src={p?.images[0].src} alt={p.name} />
               <div className="p-4">
                 <h3>{p.name}</h3>
-                <p>Price: {p?.price}</p>
+                {/* <p>Price: {p?.price}</p> */}
+                <div
+                  className="text-gray-800 font-semibold"
+                  dangerouslySetInnerHTML={{
+                    __html: p.price_html
+                  }}
+                />
                 <p>Price: {p?.short_description}</p>
               </div>
-              <Button label='Buy Now' onClick={() => ProductDetails(p.id)} />
-              <Link className="elative
-            disabled:opacity-70
-            disabled:cursor-not-allowed
-            rounded-lg
-            hover:opacity-80
-            transition
-            px-4
-            w-full"
-                to={`details/${p.id}`}> Buy Now </Link>
+              <div>
+                <ReactLink label='Buy Now' to={`details/${p.id}`} />
+              </div>
             </div>
           ))}
         </div>

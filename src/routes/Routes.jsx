@@ -3,6 +3,7 @@ import Main from '../layouts/Main'
 import Home from '../pages/Home/Home'
 import Single from '../pages/single-product/single'
 import ErrorPage from '../pages/ErrorPage'
+import CheckOut from '../pages/Checkout/CheckOut'
 // import Login from '../pages/Login/Login'
 // import SignUp from '../pages/SignUp/SignUp'
 // import RoomDetails from '../components/RoomDetails/RoomDetails'
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
       {
         path:'details/:id',
         element: <Single/>
+      },
+      {
+        path:'checkout/:id',
+        element: <CheckOut/>
       }
      
     ],

@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
-const Button = ({ label, onClick, disabled, outline, small, icon: Icon }) => {
+import { ClipLoader } from "react-spinners";
+const Button = ({ label, onClick, disabled, outline, small, icon: Icon, loading }) => {
   return (
     <button
       disabled={disabled}
       onClick={onClick}
       className={`
-          relative
+          relative flex justify-center items-center gap-2 
           disabled:opacity-70
           disabled:cursor-not-allowed
           rounded-lg
@@ -13,8 +14,8 @@ const Button = ({ label, onClick, disabled, outline, small, icon: Icon }) => {
           transition
           px-4
           w-full
-          ${outline ? 'bg-white' : 'bg-rose-500'}
-          ${outline ? 'border-black' : 'border-rose-500'}
+          ${outline ? 'bg-white' : 'bg-primary'}
+          ${outline ? 'border-black' : 'border-primary'}
           ${outline ? 'text-black' : 'text-white'}
           ${small ? 'text-sm' : 'text-md'}
           ${small ? 'py-1' : 'py-3'}
@@ -32,7 +33,9 @@ const Button = ({ label, onClick, disabled, outline, small, icon: Icon }) => {
             '
         />
       )}
-      {label}
+      {
+        loading ? <ClipLoader color="white"  size={25}/> :   label 
+      }
     </button>
   )
 }

@@ -1,30 +1,91 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Container from '../Container'
 import logoImg from '../../../assets/images/logo.png'
-// import MenuDropdown from './MenuDropdown'
+import { FaPhone } from "react-icons/fa6";
+import { IoSearchSharp } from "react-icons/io5";
+import MobileMenu from './MobileMenu';
+import { LiaShoppingBagSolid } from "react-icons/lia";
+
+const menuItems = [
+  { label: 'Home', link: '/' },
+  { label: 'Categories', link: '/categories' },
+  { label: 'Products', link: '/products' },
+  { label: 'About', link: '/about' },
+  { label: 'Contact', link: '/contact' }
+];
 
 const Navbar = () => {
+  const location = useLocation();
+
   return (
-    <div className='fixed w-full bg-white z-10 shadow-sm'>
-      <div className='py-4 border-b-[1px]'>
+    <div className='w-full bg-white shadow-sm sticky top-0 z-50'>
+      {/* Main Header */}
+      <div className='py-4'>
         <Container>
-          <div className='flex flex-row  items-center justify-between gap-3 md:gap-0'>
-            <div className='flex flex-row  items-center justify-between gap-3 md:gap-0'>
-              {/* Logo */}
+          <div className='grid md:grid-cols-3 grid-cols-2 items-center gap-4'>
+            
+            {/* Left - Logo (with mobile menu on tablet) */}
+            <div className='flex items-center gap-3 col-span-1'>
+              <div className='lg:hidden'>
+                <MobileMenu />
+              </div>
               <Link to='/'>
                 <img
-                  className='hidden md:block'
+                  className='w-32'
                   src={logoImg}
                   alt='logo'
-                  width='100'
-                  height='100'
                 />
               </Link>
             </div>
-            <div>
-              menu Mere
+
+            {/* Center - Search Bar */}
+            <div className='relative hidden sm:block'>
+              <input 
+                placeholder='Search products...' 
+                className="w-full h-12 pl-4 pr-12 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" 
+              />
+              <button className='absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-gray-500 hover:text-primary transition-colors'>
+                <IoSearchSharp className="text-xl"/>
+              </button>
+            </div>
+
+            {/* Right - Contact & Cart */}
+            <div className='flex items-center justify-end gap-3 col-span-1'>
+              <div className='hidden md:flex items-center gap-3'>
+                <div className='bg-primary p-2.5 rounded'>
+                  <FaPhone className='text-xl text-white' />
+                </div>
+                <a href="tel:+8801730638964" className='flex flex-col text-sm hover:text-primary transition-colors'>
+                  <span className='text-gray-600'>অর্ডার করতে কল করুন</span>
+                  <span className='font-bold text-primary'>01730638964</span>
+                </a>
+              </div>
+              
+              <Link to='/cart' className='relative bg-primary p-2.5 rounded hover:bg-primary/90 transition-colors'>
+                <LiaShoppingBagSolid className='text-xl text-white' />
+                <span className='absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center'>0</span>
+              </Link>
             </div>
           </div>
+        </Container>
+      </div>
+
+      {/* Bottom Menu - Desktop Only */}
+      <div className='hidden lg:block bg-menubg border-t border-gray-200'>
+        <Container>
+          <nav className='flex items-center justify-center py-3'>
+            {menuItems.map((item, index) => (
+              <Link
+                key={index}
+                to={item.link}
+                className={`px-6 py-1 text-lg font-medium hover:text-yellow-300 ${
+                  location.pathname === item.link ? 'text-yellow-200' : 'text-white'
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
         </Container>
       </div>
     </div>
@@ -32,3 +93,4 @@ const Navbar = () => {
 }
 
 export default Navbar
+export { menuItems }

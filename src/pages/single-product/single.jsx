@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
 import wooRequest from '../../apis/wooAPI';
 import Loader from '../../components/Shared/Loader';
+import Container from '../../components/Shared/Container';
+import ReactLink from '../../components/Button/ReactLink';
 
 const Single = () => {
     const { id } = useParams('id');
@@ -23,16 +25,17 @@ const Single = () => {
     }, [id]);
 
     if (loading) return <Loader />
-
     return (
-        <div>
+        <Container>
             <div>
-                <h2>{product.name}</h2>
-                <img src={product.images?.[0]?.src} alt={product.name} width="200" />
-                <p>Price: {product.price}</p>
+                <div>
+                    <h2>{product.name}</h2>
+                    <img src={product.images?.[0]?.src} alt={product.name} width="200" />
+                    <p>Price: {product.price}</p>
+                    <ReactLink label='Proceed to Checkout' to={`/checkout/${product.id}`} />
+                </div>
             </div>
-
-        </div>
+        </Container>
     )
 }
 

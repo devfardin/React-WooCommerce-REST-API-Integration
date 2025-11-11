@@ -9,12 +9,7 @@ const consumerKey = import.meta.env.VITE_CONSUMERKEY_KEY;
 const consumerSecret = import.meta.env.VITE_CONSUMERSECRET_KEY;
 
 
-
 // WooCommerce store details
-
-// const baseURL = "http://e-commerce.local/wp-json/wc/v3";
-// const consumerKey = "ck_7cbfe941198f1e34b62fc1218d04e7a7b9f927bc";
-// const consumerSecret = "cs_ee4a551c4649a8ad05b7c5498089ba2740e48b67";
 
 // Create OAuth instance
 const oauth = new OAuth({
