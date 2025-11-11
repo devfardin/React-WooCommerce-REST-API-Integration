@@ -7,12 +7,15 @@ import toast from 'react-hot-toast';
 import Button from '../../components/Button/Button';
 import { ImSpinner2, ImSpinner9 } from 'react-icons/im';
 import ShippingMethod from './ShippingMethod';
+import CartItems from './CartItems';
+import NoCartItem from './NoCartItem';
 
 const CheckOut = () => {
   const { id } = useParams('id');
   const [loading, setLoading] = useState(false)
   const [product, setProduct] = useState([]);
   const [orderLoading, setOrderLoading] = useState(false)
+  const cart = JSON.parse(localStorage.getItem('cart')) || []
 
   useEffect(() => {
     async function fetchData() {
@@ -74,6 +77,7 @@ const CheckOut = () => {
   }
 
   const placeOrder = async (id) => {
+     
     setOrderLoading(true)
     try {
       const response = await wooRequest('/orders', "POST", orderDetails);
@@ -89,14 +93,17 @@ const CheckOut = () => {
   };
 
   if (loading) return <Loader />
+
+  if(cart.length === 0) return <NoCartItem/>
   return (
     <Container>
-      <div className='flex flex-col md:flex-row gap-10 align-middle justify-between'>
-        <div className='w-full'>
+      <div className='grid grid-cols-2 gap-10 align-middle justify-between'>
+        <div className=''>
           <h1 className='text-2xl font-bold text-blue-900'>Contact information</h1>
           <ShippingMethod/>
         </div>
         <div>
+          <CartItems/>
           <h1 className='text-2xl font-bold text-blue-900'> Order summary </h1>
           <h2 className='text-xl font-medium '>{product.name}</h2>
           <h2 className='text-xl font-medium '>{product.price}</h2>

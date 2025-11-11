@@ -6,6 +6,7 @@ import Button from "../../components/Button/Button";
 import toast from "react-hot-toast";
 import ReactLink from '../../components/Button/ReactLink'
 import CategorySlider from "../../components/CategorySlider";
+import ProductCard from "../../components/Shared/ProductCard";
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -37,24 +38,8 @@ const Home = () => {
         <CategorySlider/>
         <h1>WooCommerce Products</h1>
         <div className="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-2 gap-5">
-          {products?.map((p) => (
-            <div key={p?.id} className="border border-red-100">
-              <img src={p?.images[0].src} alt={p.name} />
-              <div className="p-4">
-                <h3>{p.name}</h3>
-                {/* <p>Price: {p?.price}</p> */}
-                <div
-                  className="text-gray-800 font-semibold"
-                  dangerouslySetInnerHTML={{
-                    __html: p.price_html
-                  }}
-                />
-                <p>Price: {p?.short_description}</p>
-              </div>
-              <div>
-                <ReactLink label='Buy Now' to={`details/${p.id}`} />
-              </div>
-            </div>
+          {products?.map((product) => (
+            <ProductCard product={product}/>
           ))}
         </div>
       </div>
