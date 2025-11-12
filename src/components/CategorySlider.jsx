@@ -37,19 +37,40 @@ const CategorySlider = () => {
                     delay: 2500,
                     disableOnInteraction: false,
                 }}
-                modules={[Autoplay]}
+                // Breakpoints
+                breakpoints={{
+                    320: {
+                        slidesPerView: 2,
+                        spaceBetween: 15,
+                    },
+                    640: {
+                        slidesPerView: 3,
+                        spaceBetween: 20,
+                    },
+                    768: {
+                        slidesPerView: 4,
+                    },
+                    1024: {
+                        slidesPerView: 5,
+                    },
+                    1280: {
+                        slidesPerView: 6,
+                    },
+                }}
+                
+            modules={[Autoplay]}
                 className="mySwiper">
-                {categories.map((category) => (
-                    <SwiperSlide key={category.id}>
-                        <Link to={`/category/${category.slug}`}
-                            className='w-full block border border-border rounded py-3 text-center text-base font-medium text-headingprimary opacity-100 hover:text-primary transition-all duration-75 bg-white cursor-pointer'>
-                            {category.name}
-                        </Link>
-                    </SwiperSlide>
-                ))}
-            </Swiper>
+            {categories.map((category) => (
+                <SwiperSlide key={category.id}>
+                    <Link to={`/category/${category.slug}`}
+                        className='w-full block border border-border rounded py-3 text-center text-base font-medium text-headingprimary opacity-100 hover:text-primary transition-all duration-75 bg-white cursor-pointer'>
+                        {category.name}
+                    </Link>
+                </SwiperSlide>
+            ))}
+        </Swiper>
 
-        </div>
+        </div >
     )
 }
 

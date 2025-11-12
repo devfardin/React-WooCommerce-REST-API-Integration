@@ -34,7 +34,7 @@ const CartItems = () => {
             ) : (
                 <>
                     {/* Desktop Table */}
-                    <div className="hidden md:block overflow-x-auto">
+                    <div className="hidden lg:block overflow-x-auto">
                         <table className="w-full border-collapse">
                             <thead>
                                 <tr className="border-b-2 border-gray-200">
@@ -91,14 +91,14 @@ const CartItems = () => {
                     </div>
 
                     {/* Mobile Cards */}
-                    <div className="md:hidden space-y-4">
+                    <div className="lg:hidden space-y-4">
                         {cart.map(item => {
                             const total = (parseFloat(item.price) * item.quantity).toFixed(2)
                             return (
                                 <div key={item.id} className="border border-gray-200 rounded-lg p-4">
                                     <div className="flex gap-4 mb-3">
                                         <img 
-                                            src={item.image} 
+                                            src={item?.images[0].src} 
                                             alt={item.name}
                                             className="w-16 h-16 object-cover rounded-lg"
                                         />

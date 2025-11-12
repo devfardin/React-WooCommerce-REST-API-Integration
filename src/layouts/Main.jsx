@@ -4,8 +4,8 @@ import Footer from '../components/Shared/Footer/Footer'
 const Main = () => {
   return (
     <div>
-      <Navbar/>
-      <div className='pt-1 min-h-[calc(100vh-68px)] bg-bodycolor'>
+      <Navbar />
+      <div className='py-8 min-h-[calc(100vh-68px)] bg-bodycolor'>
         <Outlet />
       </div>
       <Footer />

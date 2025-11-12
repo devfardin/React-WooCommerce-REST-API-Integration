@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import Swal from 'sweetalert2';
-import { useLocation } from 'react-router-dom';
+import CartModal from '../Modal/CartModal';
 
 const ProductCard = ({ product }) => {
     const [cart, setCart] = useState([]);
-     const location = useLocation();
+     const navigate = useNavigate();
+
 
     const addProductsToCart = (product) => {
         const cart = JSON.parse(localStorage.getItem('cart')) || []
@@ -24,9 +25,9 @@ const ProductCard = ({ product }) => {
                 icon: "success",
                 title: "Successfully Product add to cart",
                 showConfirmButton: false,
-                timer: 2000
+                timer: 1000
             });
-             window.location.href = '/checkout';
+            navigate('/checkout');
         } else {
             Swal.fire({
                 position: "top",
@@ -40,28 +41,40 @@ const ProductCard = ({ product }) => {
     return (
         <div className='relative group border border-border rounded-xl shadow bg-white'>
             {/* Product Image */}
-            <div className='overflow-hidden rounded-t-xl'>
+            <Link to={`details/${product?.id}`} className='overflow-hidden block'>
                 <img
-                    src={product?.images[0].src}
-                    alt={product.name}
-                    className='w-full h-64 object-fill transition-transform duration-300 group-hover:scale-110'
+                    src={product?.images[0]?.src}
+                    alt={product?.name}
+                    className='w-full lg:h-64 md:h-60 h-52 object-fill transition-transform duration-300 group-hover:scale-110'
                 />
-            </div>
+            </Link>
 
             {/* Product Details wrapper */}
             <div>
 
                 <div className='p-2 flex flex-col gap-1'>
-                    <h3 className='font-medium text-lg line-clamp-2 truncate'>{product.name}</h3>
+                    <Link to={`details/${product?.id}`} className='overflow-hidden block'>
+                        <h3 className='font-medium text-lg line-clamp-2 truncate hover:text-primary transition-colors duration-100' title={product?.name}>{product?.name}</h3>
+                    </Link>
+                    <div className='flex gap-3'>
+                        {
+                            product?.regular_price ?
+                                <h2 className='text-lg text-gray-600 line-through'>৳ {product?.regular_price}</h2> : ""
+                        }
+                        <h2>
+                            <span className='text-lg font-semibold text-primary'>৳ {product?.price}</span>
+                        </h2>
+                    </div>
 
 
                 </div>
                 <div className='mt-3 flex flex-col'>
-                    <Link to={`details/${product.id}`} className='bg-btndangerbg text-white px-2 py-1.5 hover:bg-btndangerhoverbg transition-colors duration-300 w-full block text-center text-lg font-medium'>Add to Cart</Link>
+                    
+                    {/* Cart Modal  */}
+                    <CartModal product={product}/>
 
                     <button onClick={() => addProductsToCart(product)}
-                        // to={`details/${product.id}`}
-                        className='bg-primary text-white px-2 py-1.5 hover:bg-btndangerhoverbg transition-colors duration-300 w-full block text-center text-lg font-medium rounded-b-xl'>Add to Cart</button>
+                        className='bg-primary text-white px-2 py-1.5 cursor-pointer transition-colors duration-300 w-full block text-center text-lg font-medium rounded-b-xl'>অর্ডার করুন</button>
                 </div>
             </div>
 

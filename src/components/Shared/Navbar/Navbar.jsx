@@ -18,7 +18,7 @@ const Navbar = () => {
   const location = useLocation();
 
   return (
-    <div className='w-full bg-white shadow-sm sticky top-0 z-50'>
+    <div className='w-full bg-white shadow-sm sticky top-0 z-20'>
       {/* Main Header */}
       <div className='py-4'>
         <Container>
