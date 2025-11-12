@@ -1,9 +1,23 @@
+import Container from "../Container"
+
 const Footer = () => {
   return (
-    <footer className='px-4 divide-y  text-gray-800 relative bottom-0 left-0'>
-      <div className='py-6 text-sm text-center text-gray-400'>
-        © 2023 StayVista Inc. All rights reserved.
-      </div>
+    <footer className='bg-[#111827]'>
+      <Container>
+        <div className='text-center py-5'>
+          <p className='text-white text-lg'>
+            © {new Date().getFullYear()} All rights reserved. Developed by{' '}
+            <a
+              href='https://github.com/devfardin'
+              target='_blank'
+              rel='noopener noreferrer'
+              className='gradient-text'
+            >
+              Fardin Ahmed
+            </a>
+          </p>
+        </div>
+      </Container>
     </footer>
   )
 }

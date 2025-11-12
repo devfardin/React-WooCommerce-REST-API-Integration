@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import wooRequest from "../../apis/wooAPI";
-
-const ShippingMethod = () => {
+import PlaceHolderLoader from "../../components/Shared/PlaceHolderLoader";
+import { BsCheckCircle } from "react-icons/bs";
+const ShippingMethod = ({ setShippingZoon }) => {
     const [shipping, setShipping] = useState([]);
     const [selected, setSelected] = useState(1);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        setLoading(true)
         async function fetchData() {
             try {
                 const response = await wooRequest(`/shipping/zones/1/methods`);
                 setShipping(response.data);
+                setLoading(false);
             } catch (error) {
                 console.error("Error fetching product:", error);
             }
@@ -17,12 +21,15 @@ const ShippingMethod = () => {
         fetchData()
     }, []);
 
-    console.log(shipping);
-
+    const shippingMethodCost = (ship) => {
+        setSelected(ship?.order);
+        setShippingZoon(ship);
+    }
+    if (loading) return <PlaceHolderLoader />
     return (
-        <div className="p-4 border rounded-2xl shadow-sm bg-white max-w-xl">
-            <h2 className="text-lg font-semibold mb-4 text-gray-800">
-                Shipping Options
+        <div>
+            <h2 className="text-xl font-medium mb-2 text-gray-800">
+                কুরিয়ার চার্জ
             </h2>
 
             <div className="space-y-3">
@@ -40,14 +47,19 @@ const ShippingMethod = () => {
                                 <input
                                     type="radio"
                                     name="shipping" // same name for all radios
-                                    value={title}
+                                    value={cost}
                                     checked={selected === order}
-                                    onChange={() => setSelected(order)}
+                                    onChange={() => shippingMethodCost(ship)}
                                     className="text-rose-500 focus:ring-rose-500 w-0 h-0"
                                 />
-                                <span className="font-medium text-gray-700 text-xl">{ship.title}</span>
+                                <span className="font-medium text-gray-700 text-lg flex gap-2 items-center">
+                                    {
+                                        selected == order ? <BsCheckCircle className="text-rose-500" /> : ''
+                                    }
+                                    {ship.title}
+                                </span>
                             </div>
-                            <span className="font-semibold text-gray-800 text-lg">{cost}</span>
+                            <span className="font-semibold text-gray-800 text-lg">{cost} ৳</span>
                         </label>
                     );
                 })}

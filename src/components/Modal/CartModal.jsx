@@ -1,6 +1,8 @@
 import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 import { FaTrash } from 'react-icons/fa'
+import { FaRegTrashCan } from 'react-icons/fa6'
 import { RxCross1 } from 'react-icons/rx'
 import { Link } from 'react-router'
 const CartModal = ({ product }) => {
@@ -13,6 +15,7 @@ const CartModal = ({ product }) => {
         const updatedCart = cart.filter(item => item.id !== productId)
         localStorage.setItem('cart', JSON.stringify(updatedCart))
         setCart(updatedCart);
+         toast.success('Item removed from your cart.')
     }
 
     const updateQuantity = (productId, newQuantity) => {
@@ -22,6 +25,7 @@ const CartModal = ({ product }) => {
         )
         localStorage.setItem('cart', JSON.stringify(updatedCart))
         setCart(updatedCart)
+         toast.success('Cart updated successfully!')
     }
 
     const addProductsToCart = (product) => {
@@ -128,13 +132,13 @@ const CartModal = ({ product }) => {
                                                             >+</button>
                                                         </div>
                                                     </td>
-                                                    <td className="py-4 px-2 font-semibold text-primary">${total}</td>
+                                                    <td className="py-4 px-2 font-medium text-headingprimary">${total}</td>
                                                     <td className="py-4 px-2">
                                                         <button
                                                             onClick={() => removeFromCart(item.id)}
-                                                            className="text-red-600 hover:text-red-800 p-2"
+                                                            className="text-headingcolor hover:text-primary p-2"
                                                         >
-                                                            <FaTrash />
+                                                            <FaRegTrashCan className='text-2xl'/>
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -144,14 +148,14 @@ const CartModal = ({ product }) => {
                                 </table>
                             </div>
                             {/* Footer */}
-                            <div className="mt-8 bg-gray-50 rounded-lg p-6">
+                            <div className="mt-4 bg-gray-50 rounded-lg p-5">
                                 <div className="flex justify-between items-center mb-3">
                                     <span className="font-medium">Sub-Total:</span>
                                     <span className="font-medium">${subTotal?.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between items-center mb-3">
                                     <span className="font-medium">Delivery Charges:</span>
-                                    <span className="font-medium">${deliveryCharges?.toFixed(2)}</span>
+                                    <span className="font-medium"> Shipping zone not selected. </span>
                                 </div>
                                 <div className="flex justify-between items-center text-lg font-bold border-t border-gray-300 pt-3">
                                     <span>Total Amount:</span>
