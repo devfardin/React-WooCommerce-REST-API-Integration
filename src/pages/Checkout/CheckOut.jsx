@@ -14,6 +14,8 @@ const CheckOut = () => {
   const { id } = useParams('id');
   const [loading, setLoading] = useState(false)
   const [product, setProduct] = useState([]);
+  const [orderLoading, setOrderLoading] = useState(false)
+  const [cart, setCart] = useState([])
   const [shippingZoon, setShippingZoon] = useState([
     {
       title: "ঢাকা সিটির বাহিরে",
@@ -29,9 +31,9 @@ const CheckOut = () => {
       },
     },
   ]);
-  const [orderLoading, setOrderLoading] = useState(false)
-  const cart = JSON.parse(localStorage.getItem('cart')) || []
-
+  useEffect(() => {
+    setCart(JSON.parse(localStorage.getItem('cart')) || []);
+  }, [])
   useEffect(() => {
     async function fetchData() {
       setLoading(true)
@@ -45,8 +47,6 @@ const CheckOut = () => {
     }
     if (id) fetchData();
   }, [id]);
-
-
 
   const orderDetails = {
     "payment_method": "bacs",
@@ -106,7 +106,6 @@ const CheckOut = () => {
   };
 
   if (loading) return <Loader />
-
   if (cart.length === 0) return <NoCartItem />
   return (
     <Container>
@@ -120,7 +119,7 @@ const CheckOut = () => {
         </div>
         <div>
           <div className='w-full p-4 border border-gray-200 rounded-lg shadow-sm bg-white mb-6'>
-            <CartItems shippingZoon={shippingZoon} />
+            <CartItems cart={cart} setCart={setCart} shippingZoon={shippingZoon} />
           </div>
         </div>
       </div>
