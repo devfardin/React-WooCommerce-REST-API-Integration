@@ -1,23 +1,21 @@
 import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useState } from 'react'
-import toast from 'react-hot-toast'
-import { FaTrash } from 'react-icons/fa'
 import { FaRegTrashCan } from 'react-icons/fa6'
 import { RxCross1 } from 'react-icons/rx'
 import { Link, useNavigate } from 'react-router'
 import NoCartItem from '../../pages/Checkout/NoCartItem'
 import Swal from 'sweetalert2'
+import { toast } from 'react-toastify'
 const CartModal = ({ product }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [cart, setCart] = useState([]);
-    const deliveryCharges = 50
     const navigate = useNavigate()
 
     const removeFromCart = (productId) => {
         const updatedCart = cart.filter(item => item.id !== productId)
         localStorage.setItem('cart', JSON.stringify(updatedCart))
         setCart(updatedCart);
-        toast.success('Item removed from your cart.')
+        toast.info('Item removed from your cart.')
     }
 
     const updateQuantity = (productId, newQuantity) => {
@@ -50,7 +48,6 @@ const CartModal = ({ product }) => {
                 showConfirmButton: false,
                 timer: 1000
             });
-            navigate('/checkout');
         } else {
             Swal.fire({
                 position: "top",
@@ -65,8 +62,7 @@ const CartModal = ({ product }) => {
         setIsOpen(false)
     }
     const subTotal = cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0)
-    const totalAmount = subTotal + deliveryCharges
-    // if(cart.length = 0) return <NoCartItem/>
+    const totalAmount = subTotal;
     return (
         <>
             <Button onClick={() => addProductsToCart(product)}
@@ -98,7 +94,7 @@ const CartModal = ({ product }) => {
 
                             {/* Desktop Table */}
                             {
-                                cart.length === 0 ?  <NoCartItem/> : <div>
+                                cart.length === 0 ? <NoCartItem /> : <div>
                                     <div className="hidden lg:block overflow-x-auto">
                                         <table className="w-full border-collapse">
                                             <thead>

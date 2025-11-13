@@ -1,21 +1,20 @@
-import { useState, useEffect } from 'react';
-import toast from 'react-hot-toast';
+import { useEffect } from 'react';
+// import toast from 'react-hot-toast';
 import { FaRegTrashCan } from 'react-icons/fa6'
+import { toast } from 'react-toastify';
 
-const CartItems = ({ shippingZoon, setCart, cart}) => {
-
+const CartItems = ({ shippingZoon, setCart, cart }) => {
 
     useEffect(() => {
         setCart(JSON.parse(localStorage.getItem('cart')) || [])
     }, [])
 
     const deliveryCharges = Number(shippingZoon?.settings?.cost?.value || shippingZoon?.[0]?.settings?.cost?.value || 120);
-
     const removeFromCart = (productId) => {
         const updatedCart = cart.filter(item => item.id !== productId)
         localStorage.setItem('cart', JSON.stringify(updatedCart))
         setCart(updatedCart);
-        toast.success('Item removed from your cart.')
+        toast.info('Item removed from your cart.')
     }
 
     const updateQuantity = (productId, newQuantity) => {
@@ -25,7 +24,8 @@ const CartItems = ({ shippingZoon, setCart, cart}) => {
         )
         localStorage.setItem('cart', JSON.stringify(updatedCart))
         setCart(updatedCart)
-        toast.success('Cart updated successfully!')
+        toast.success('Cart updated successfully!');
+
     }
 
     const subTotal = cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0)
@@ -65,21 +65,21 @@ const CartItems = ({ shippingZoon, setCart, cart}) => {
                                     <td className="py-4 px-2">
                                         <div>
                                             <div className="flex border border-border rounded items-center justify-between gap-1">
-                                                <button
-                                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                                className="w-8 h-8 border border-border bg-gray-50 hover:bg-gray-100"
-                                            >-</button>
-                                            <span className="w-5 text-center">{item.quantity}</span>
-                                            <button
-                                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                className="w-8 h-8 border border-border bg-gray-50 hover:bg-gray-100"
-                                            >+</button>
+                                                <button type='button'
+                                                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                    className="w-8 h-8 border border-border bg-gray-50 hover:bg-gray-100"
+                                                >-</button>
+                                                <span className="w-5 text-center">{item.quantity}</span>
+                                                <button type='button'
+                                                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                    className="w-8 h-8 border border-border bg-gray-50 hover:bg-gray-100"
+                                                >+</button>
                                             </div>
                                         </div>
                                     </td>
                                     <td className="py-4 px-2 font-medium text-headingprimary">{total} ৳</td>
                                     <td className="py-4 px-2">
-                                        <button
+                                        <button type='button'
                                             onClick={() => removeFromCart(item.id)}
                                             className="text-headingcolor hover:text-primary p-2"
                                         >
@@ -109,7 +109,7 @@ const CartItems = ({ shippingZoon, setCart, cart}) => {
                                     <h3 className="font-medium text-lg leading-5 mb-1">{item.name}</h3>
                                     <p className="text-gray-600 text-lg">{parseFloat(item.price).toFixed(2)} ৳</p>
                                 </div>
-                                <button
+                                <button type='button'
                                     onClick={() => removeFromCart(item.id)}
                                     className="text-headingcolor hover:text-primary p-2"
                                 >
@@ -118,12 +118,12 @@ const CartItems = ({ shippingZoon, setCart, cart}) => {
                             </div>
                             <div className="flex justify-between items-center">
                                 <div className="flex items-center gap-2 border border-border">
-                                    <button
+                                    <button type='button'
                                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                         className="w-8 h-8 border border-border bg-gray-50 "
                                     >-</button>
                                     <span className="w-8 text-center">{item.quantity}</span>
-                                    <button
+                                    <button type='button'
                                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
                                         className="w-8 h-8 border border-border bg-gray-50"
                                     >+</button>

@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import Container from '../../components/Shared/Container';
-import Loader from '../../components/Shared/Loader';
 import wooRequest from '../../apis/wooAPI';
 import toast from 'react-hot-toast';
-import Button from '../../components/Button/Button';
 import ShippingMethod from './ShippingMethod';
 import CartItems from './CartItems';
 import NoCartItem from './NoCartItem';
 import Form from './Form';
-import axios from 'axios';
-import { createAnOrder } from '../../apis/CreateOrder';
+import Swal from 'sweetalert2';
+import { ClipLoader } from 'react-spinners';
+import { useNavigate } from 'react-router';
 
 const CheckOut = () => {
-  const { id } = useParams('id');
   const [loading, setLoading] = useState(false)
   const [cart, setCart] = useState([])
+  const [errorMessage, setErrorMessage] = useState('')
+  const navigate = useNavigate();
   const [shippingZoon, setShippingZoon] = useState([
     {
       title: "ঢাকা সিটির বাহিরে",
@@ -32,12 +31,9 @@ const CheckOut = () => {
     },
   ]);
 
-
-
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem('cart')) || []);
   }, [])
-
 
   const handleOrderSubmit = async (event) => {
     event.preventDefault()
@@ -46,40 +42,37 @@ const CheckOut = () => {
     const mobile = form.mobile.value;
     const address = form.address.value;
 
-    const shipping_lines = {
-      method_id: "flat_rate",
-      method_title: "Flat Rate",
-      total: shippingZoon?.settings?.cost?.value || "0",
-    }
-    const billing = {
-      first_name: name,
-      address_1: address,
-      // country: "Bangladesh",
-      phone: mobile
-    }
-    const shipping = {
-      first_name: name,
-      address_1: address,
-      // country: "Bangladesh",
-      phone: mobile
-    }
-    const line_items = cart.map(item => ({
-      product_id: item.id,
-      quantity: item.quantity
-    }));
+    // Check customer data are exist
+    if (!name) {
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: 'Please fill name field',
+        showConfirmButton: false,
+        timer: 1500
+      });
+      return;
+    } else if (!mobile) {
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: 'Please fill mobile field',
+        showConfirmButton: false,
+        timer: 1500
+      });
+      return;
+    } else if (!address) {
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: 'Please fill address field',
+        showConfirmButton: false,
+        timer: 1500
+      });
+      return;
+    };
 
-    const orderDetails1 = {
-      payment_method: "bacs",
-      payment_method_title: "Direct Bank Transfer",
-      set_paid: true,
-      shipping_lines,
-      billing,
-      shipping,
-      line_items,
-    }
-
-
-
+    // Customer Data structer here
     const orderDetails = {
       "payment_method": "cod",
       "payment_method_title": "Cash on Delivery",
@@ -89,11 +82,11 @@ const CheckOut = () => {
         "address_1": address,
         "phone": mobile,
       },
-      line_items : cart?.map(item => ({
+      line_items: cart?.map(item => ({
         product_id: item?.id,
         quantity: item?.quantity,
       })),
-      // line_items: line_items,
+
       "shipping_lines": [
         {
           "method_id": "flat_rate",
@@ -102,26 +95,29 @@ const CheckOut = () => {
         }
       ]
     }
-    
-
-
 
     try {
+      setLoading(true)
       const response = await wooRequest('/orders', "POST", orderDetails);
-      console.log(response);
       if (response.data.id) {
-        // setOrderLoading(false)
-        toast.success('Order placed successfully!');
+        setLoading(false)
+        Swal.fire({
+          icon: "success",
+          title: ' আপনার অর্ডার সফলভাবে সম্পন্ন হয়েছে!',
+          text: '💬 ধন্যবাদ আপনার অর্ডারের জন্য! আমাদের প্রতিনিধি খুব শীঘ্রই আপনাকে ফোন করে অর্ডারটি নিশ্চিত করবেন। অনুগ্রহ করে আপনার ফোনটি সচল রাখুন।',
+        });
+        localStorage.removeItem('cart');
+        setCart([]);
+        navigate('/')
       }
-
     } catch (error) {
+      setLoading(false)
       console.error("Error placing order:", error);
 
     }
   }
 
 
-  if (loading) return <Loader />
   if (cart.length === 0) return <NoCartItem />
   return (
     <Container>
@@ -133,14 +129,9 @@ const CheckOut = () => {
 
             {/* <Button label={'অর্ডার কনফার্ম করুন'} onClick={() => placeOrder(product.id)} loading={orderLoading} disabled={orderLoading} /> */}
 
-            <input className=' relative flex justify-center items-center gap-2 bg-primary border border-primary text-md py-3 font-bold text-white
-          disabled:opacity-70 
-          disabled:cursor-not-allowed
-          rounded-lg
-          hover:opacity-80
-          transition
-          px-4
-          w-full' type="submit" value='অর্ডার কনফার্ম করুন' />
+            <button disabled={loading} className=' relative flex justify-center items-center gap-2 bg-primary border border-primary text-md py-3
+            font-bold text-white disabled:opacity-70 disabled:cursor-not-allowed rounded hover:opacity-80 transition px-4 w-full' type="submit">  {
+                loading ? <ClipLoader color="white" size={25} /> : 'অর্ডার কনফার্ম করুন'} </button>
           </div>
           <div>
             <div className='w-full p-4 border border-gray-200 rounded-lg shadow-sm bg-white mb-6'>
