@@ -23,14 +23,13 @@ const Home = () => {
     fetchProducts();
   }, []);
 
-
   if (loading) return <Loader />;
   return (
     <Container>
       <div>
         <CategorySlider/>
         <div className="mt-5 mb-3">
-        <SectionTitle title='All' highlight='Products' lable='view all' />
+        <SectionTitle title='All' highlight='Products' lable='view all' to='/shop'/>
         </div>
         <div className="grid 2xl:grid-cols-5  xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-5">
           {products?.map((product) => (

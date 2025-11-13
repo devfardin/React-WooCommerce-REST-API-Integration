@@ -4,13 +4,14 @@ import wooRequest from '../../apis/wooAPI';
 import Loader from '../../components/Shared/Loader';
 import Container from '../../components/Shared/Container';
 import SingleButton from './SingleButton';
+import ImageThumbails from './ImageThumbails';
+// import { IoMdCheckmark } from 'react-icons/io';
 
 const Single = () => {
     const { id } = useParams('id');
     const [product, setProduct] = useState({});
     const [loading, setLoading] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(0);
-    const [isZoomed, setIsZoomed] = useState(false);
+
 
     useEffect(() => {
         async function fetchData() {
@@ -39,86 +40,61 @@ const Single = () => {
         <Container>
             <div className="py-8">
                 {/* Product Details Section */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
                     {/* Left Column - Product Images */}
-                    <div className="space-y-4">
+                    <div className="space-y-4 rounded-lg bg-white p-2">
                         {/* Main Image */}
-                        <div className="relative overflow-hidden rounded-lg bg-gray-100">
-                            <img
-                                src={images[selectedImage]?.src || '/placeholder.jpg'}
-                                alt={product.name}
-                                className={`w-full h-96 object-cover transition-transform duration-300 cursor-zoom-in ${isZoomed ? 'scale-150' : 'scale-100'
-                                    }`}
-                                onMouseEnter={() => setIsZoomed(true)}
-                                onMouseLeave={() => setIsZoomed(false)}
-                            />
-                        </div>
 
-                        {/* Image Thumbnails */}
-                        {images.length > 1 && (
-                            <div className="flex space-x-2 overflow-x-auto">
-                                {images.map((image, index) => (
-                                    <button
-                                        key={index}
-                                        onClick={() => setSelectedImage(index)}
-                                        className={`flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 ${selectedImage === index ? 'border-blue-500' : 'border-gray-200'
-                                            }`}
-                                    >
-                                        <img
-                                            src={image.src}
-                                            alt={`${product.name} ${index + 1}`}
-                                            className="w-full h-full object-cover"
-                                        />
-                                    </button>
-                                ))}
-                            </div>
-                        )}
+                        <ImageThumbails images={images} />
+
                     </div>
 
                     {/* Right Column - Product Details */}
-                    <div className="space-y-6">
-                        {/* Product Title */}
-                        <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+                    <div>
+                        <div className="space-y-6 rounded-lg bg-white p-6">
+                            {/* Product Title */}
+                            <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
 
-                        {/* Short Description */}
-                        {product.short_description && (
-                            <div
-                                className="text-gray-600 prose prose-sm"
-                                dangerouslySetInnerHTML={{ __html: product.short_description }}
-                            />
-                        )}
-
-                        {/* Price */}
-                        <div className="flex items-center space-x-3">
-                            <span className="text-2xl font-bold text-primary">৳{salePrice}</span>
-                            {isOnSale && (
-                                <span className="text-xl text-gray-600 line-through">৳{regularPrice}</span>
+                            {/* Short Description */}
+                            {product.short_description && (
+                                <div
+                                    className="text-gray-600 prose prose-sm"
+                                    dangerouslySetInnerHTML={{ __html: product.short_description }}
+                                />
                             )}
-                        </div>
 
-                        {/* Action Buttons */}
-                        <div className="space-y-3">
-                            <div className="flex flex-col gap-3">
-                                <SingleButton product={product} />
+                            {/* Price */}
+                            <div className="flex items-center space-x-3">
+                                <span className="text-2xl font-bold text-primary">৳{salePrice}</span>
+                                {isOnSale && (
+                                    <span className="text-xl text-gray-600 line-through">৳{regularPrice}</span>
+                                )}
                             </div>
-                            <button className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
-                                অর্ডার করতে কল করুন
-                            </button>
-                        </div>
 
-                        {/* SKU */}
-                        {product.sku && (
-                            <div className="text-sm text-gray-600">
-                                <span className="font-medium">SKU:</span> {product.sku}
+                            {/* Action Buttons */}
+                            <div className="space-y-3">
+                                <div className="flex flex-col gap-3">
+                                    <SingleButton product={product} />
+                                </div>
+                                <button className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-md transition-colors">
+                                    অর্ডার করতে কল করুন
+                                </button>
                             </div>
-                        )}
 
-                        {/* Delivery Charges */}
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                            <h3 className="font-semibold text-gray-900 mb-2">ডেলিভারি চার্জ</h3>
-                            <div className="text-sm text-gray-700 space-y-1">
-                                <div>ঢাকার ভিতরে: ৮০ টাকা</div>
-                                <div>ঢাকার বাইরে: ১২০ টাকা</div>
+                            {/* SKU */}
+                            {product.sku && (
+                                <div className="text-sm text-gray-600">
+                                    <span className="font-medium">SKU:</span> {product.sku}
+                                </div>
+                            )}
+
+                            {/* Delivery Charges */}
+                            <div className="bg-gray-50 p-5 rounded-lg">
+                                <h3 className="font-semibold text-lg text-primary mb-2 ">🚚 ডেলিভারি চার্জ</h3>
+                                <div className="text-base text-gray-700 space-y-1">
+                                    <div>ঢাকার ভিতরে: ৮০ টাকা</div>
+                                    <div>ঢাকার বাইরে: ১২০ টাকা</div>
+                                </div>
                             </div>
                         </div>
                     </div>
