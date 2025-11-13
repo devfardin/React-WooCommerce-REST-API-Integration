@@ -41,13 +41,7 @@ const CartModal = ({ product }) => {
         localStorage.setItem("cart", JSON.stringify(cart));
         setCart([...cart]);
         if (cart.length > 0) {
-            Swal.fire({
-                position: "top",
-                icon: "success",
-                title: "Successfully Product add to cart",
-                showConfirmButton: false,
-                timer: 1000
-            });
+            toast.success('Successfully Product add to cart')
         } else {
             Swal.fire({
                 position: "top",
@@ -159,7 +153,7 @@ const CartModal = ({ product }) => {
                                         </div>
                                         <div className="flex justify-between items-center mb-3">
                                             <span className="font-medium">Delivery Charges:</span>
-                                            <span className="font-medium"> Shipping zone not selected. </span>
+                                            <span className="font-medium"> শিপিং জোন নির্বাচন করা হয়নি। </span>
                                         </div>
                                         <div className="flex justify-between items-center text-lg font-bold border-t border-gray-300 pt-3">
                                             <span>Total Amount:</span>

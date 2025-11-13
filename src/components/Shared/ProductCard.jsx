@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router'
 import Swal from 'sweetalert2';
 import CartModal from '../Modal/CartModal';
+import { toast } from 'react-toastify';
 
 const ProductCard = ({ product }) => {
     const [cart, setCart] = useState([]);
@@ -20,13 +21,7 @@ const ProductCard = ({ product }) => {
         localStorage.setItem("cart", JSON.stringify(cart));
         setCart([...cart]);
         if (cart.length > 0) {
-            Swal.fire({
-                position: "top",
-                icon: "success",
-                title: "Successfully Product add to cart",
-                showConfirmButton: false,
-                timer: 1000
-            });
+            toast.success('Successfully Product add to cart')
             navigate('/checkout');
         } else {
             Swal.fire({

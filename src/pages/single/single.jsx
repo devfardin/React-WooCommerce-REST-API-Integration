@@ -11,7 +11,7 @@ const Single = () => {
     const [loading, setLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState(0);
     const [isZoomed, setIsZoomed] = useState(false);
-    
+
     useEffect(() => {
         async function fetchData() {
             setLoading(true)
@@ -29,7 +29,7 @@ const Single = () => {
     }, [id]);
 
     if (loading) return <Loader />
-    
+
     const images = product.images || [];
     const regularPrice = product.regular_price;
     const salePrice = product.price;
@@ -44,17 +44,16 @@ const Single = () => {
                     <div className="space-y-4">
                         {/* Main Image */}
                         <div className="relative overflow-hidden rounded-lg bg-gray-100">
-                            <img 
-                                src={images[selectedImage]?.src || '/placeholder.jpg'} 
+                            <img
+                                src={images[selectedImage]?.src || '/placeholder.jpg'}
                                 alt={product.name}
-                                className={`w-full h-96 object-cover transition-transform duration-300 cursor-zoom-in ${
-                                    isZoomed ? 'scale-150' : 'scale-100'
-                                }`}
+                                className={`w-full h-96 object-cover transition-transform duration-300 cursor-zoom-in ${isZoomed ? 'scale-150' : 'scale-100'
+                                    }`}
                                 onMouseEnter={() => setIsZoomed(true)}
                                 onMouseLeave={() => setIsZoomed(false)}
                             />
                         </div>
-                        
+
                         {/* Image Thumbnails */}
                         {images.length > 1 && (
                             <div className="flex space-x-2 overflow-x-auto">
@@ -62,12 +61,11 @@ const Single = () => {
                                     <button
                                         key={index}
                                         onClick={() => setSelectedImage(index)}
-                                        className={`flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 ${
-                                            selectedImage === index ? 'border-blue-500' : 'border-gray-200'
-                                        }`}
+                                        className={`flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 ${selectedImage === index ? 'border-blue-500' : 'border-gray-200'
+                                            }`}
                                     >
-                                        <img 
-                                            src={image.src} 
+                                        <img
+                                            src={image.src}
                                             alt={`${product.name} ${index + 1}`}
                                             className="w-full h-full object-cover"
                                         />
@@ -81,47 +79,40 @@ const Single = () => {
                     <div className="space-y-6">
                         {/* Product Title */}
                         <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
-                        
+
                         {/* Short Description */}
                         {product.short_description && (
-                            <div 
+                            <div
                                 className="text-gray-600 prose prose-sm"
                                 dangerouslySetInnerHTML={{ __html: product.short_description }}
                             />
                         )}
-                        
+
                         {/* Price */}
                         <div className="flex items-center space-x-3">
-                            <span className="text-3xl font-bold text-green-600">৳{salePrice}</span>
+                            <span className="text-2xl font-bold text-primary">৳{salePrice}</span>
                             {isOnSale && (
-                                <span className="text-xl text-gray-500 line-through">৳{regularPrice}</span>
+                                <span className="text-xl text-gray-600 line-through">৳{regularPrice}</span>
                             )}
                         </div>
-                        
+
                         {/* Action Buttons */}
                         <div className="space-y-3">
-                            <div className="flex space-x-3">
-                                {/* <button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
-                                    অর্ডার করুন
-                                </button> */}
-                                <SingleButton product={product}/>
-
-                                <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
-                                    Add to Cart
-                                </button>
+                            <div className="flex flex-col gap-3">
+                                <SingleButton product={product} />
                             </div>
                             <button className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
                                 অর্ডার করতে কল করুন
                             </button>
                         </div>
-                        
+
                         {/* SKU */}
                         {product.sku && (
                             <div className="text-sm text-gray-600">
                                 <span className="font-medium">SKU:</span> {product.sku}
                             </div>
                         )}
-                        
+
                         {/* Delivery Charges */}
                         <div className="bg-gray-50 p-4 rounded-lg">
                             <h3 className="font-semibold text-gray-900 mb-2">ডেলিভারি চার্জ</h3>
@@ -132,7 +123,7 @@ const Single = () => {
                         </div>
                     </div>
                 </div>
-                
+
                 {/* Product Description Section */}
                 <div className="border-t pt-8">
                     <div className="mb-6">
@@ -140,9 +131,9 @@ const Single = () => {
                             Description
                         </button>
                     </div>
-                    
+
                     {product.description && (
-                        <div 
+                        <div
                             className="prose prose-lg max-w-none  leading-7"
                             dangerouslySetInnerHTML={{ __html: product.description }}
                         />
