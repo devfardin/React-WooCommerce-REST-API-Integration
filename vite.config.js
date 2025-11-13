@@ -14,4 +14,13 @@ export default defineConfig({
       },
     }),
   ],
+  erver: {
+    proxy: {
+      '/wp-json': {
+        target: 'http://e-commerce.local',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 })

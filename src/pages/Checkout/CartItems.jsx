@@ -4,8 +4,6 @@ import { FaRegTrashCan } from 'react-icons/fa6'
 
 const CartItems = ({ shippingZoon, setCart, cart}) => {
 
-    console.log(shippingZoon[0]?.settings?.cost?.value);
-    // const [cart, setCart] = useState([]);
 
     useEffect(() => {
         setCart(JSON.parse(localStorage.getItem('cart')) || [])

@@ -9,12 +9,12 @@ import ShippingMethod from './ShippingMethod';
 import CartItems from './CartItems';
 import NoCartItem from './NoCartItem';
 import Form from './Form';
+import axios from 'axios';
+import { createAnOrder } from '../../apis/CreateOrder';
 
 const CheckOut = () => {
   const { id } = useParams('id');
   const [loading, setLoading] = useState(false)
-  const [product, setProduct] = useState([]);
-  const [orderLoading, setOrderLoading] = useState(false)
   const [cart, setCart] = useState([])
   const [shippingZoon, setShippingZoon] = useState([
     {
@@ -31,98 +31,125 @@ const CheckOut = () => {
       },
     },
   ]);
+
+
+
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem('cart')) || []);
   }, [])
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true)
-      try {
-        const response = await wooRequest(`/products/${id}`);
-        setProduct(response.data);
-        setLoading(false)
-      } catch (error) {
-        console.error("Error fetching product:", error);
-      }
+
+
+  const handleOrderSubmit = async (event) => {
+    event.preventDefault()
+    const form = event.target
+    const name = form.name.value;
+    const mobile = form.mobile.value;
+    const address = form.address.value;
+
+    const shipping_lines = {
+      method_id: "flat_rate",
+      method_title: "Flat Rate",
+      total: shippingZoon?.settings?.cost?.value || "0",
     }
-    if (id) fetchData();
-  }, [id]);
+    const billing = {
+      first_name: name,
+      address_1: address,
+      // country: "Bangladesh",
+      phone: mobile
+    }
+    const shipping = {
+      first_name: name,
+      address_1: address,
+      // country: "Bangladesh",
+      phone: mobile
+    }
+    const line_items = cart.map(item => ({
+      product_id: item.id,
+      quantity: item.quantity
+    }));
 
-  const orderDetails = {
-    "payment_method": "bacs",
-    "payment_method_title": "Direct Bank Transfer",
-    "set_paid": true,
-    "billing": {
-      "first_name": "Fardin",
-      "last_name": "Ahmed",
-      "address_1": "Dhanbari, Tangail",
-      "address_2": "",
-      "city": "Dhanbari",
-      "state": "CA",
-      "postcode": "94103",
-      "country": "US",
-      "email": "contactfardin22@gmail.com",
-      "phone": "+88 01316049157"
-    },
-    "shipping": {
-      "first_name": "John",
-      "last_name": "Doe",
-      "address_1": "969 Market",
-      "address_2": "",
-      "city": "San Francisco",
-      "state": "CA",
-      "postcode": "94103",
-      "country": "US"
-    },
-    "line_items": [
-      {
-        "product_id": id,
-        "quantity": 2
+    const orderDetails1 = {
+      payment_method: "bacs",
+      payment_method_title: "Direct Bank Transfer",
+      set_paid: true,
+      shipping_lines,
+      billing,
+      shipping,
+      line_items,
+    }
+
+
+
+    const orderDetails = {
+      "payment_method": "cod",
+      "payment_method_title": "Cash on Delivery",
+      "set_paid": false,
+      "billing": {
+        "first_name": name,
+        "address_1": address,
+        "phone": mobile,
       },
+      line_items : cart?.map(item => ({
+        product_id: item?.id,
+        quantity: item?.quantity,
+      })),
+      // line_items: line_items,
+      "shipping_lines": [
+        {
+          "method_id": "flat_rate",
+          "method_title": "Flat Rate",
+          "total": shippingZoon?.settings?.cost?.value == undefined ? shippingZoon[0]?.settings?.cost?.value : shippingZoon?.settings?.cost?.value,
+        }
+      ]
+    }
+    
 
-    ],
-    "shipping_lines": [
-      {
-        "method_id": "flat_rate",
-        "method_title": "Flat Rate",
-        "total": "10.00"
-      }
-    ]
-  }
 
-  const placeOrder = async (id) => {
-    setOrderLoading(true)
+
     try {
       const response = await wooRequest('/orders', "POST", orderDetails);
       console.log(response);
-
       if (response.data.id) {
-        setOrderLoading(false)
+        // setOrderLoading(false)
         toast.success('Order placed successfully!');
       }
+
     } catch (error) {
       console.error("Error placing order:", error);
+
     }
-  };
+  }
+
 
   if (loading) return <Loader />
   if (cart.length === 0) return <NoCartItem />
   return (
     <Container>
-      <div className='grid lg:grid-cols-2 grid-cols-1 lg:gap-7 gap-8 align-middle justify-between'>
+      <form onSubmit={handleOrderSubmit}>
+        <div className='grid lg:grid-cols-2 grid-cols-1 lg:gap-7 gap-8 align-middle justify-between'>
+          <div className='w-full p-6 border border-gray-200 rounded-lg shadow-sm bg-white flex flex-col gap-4'>
+            <Form />
+            <ShippingMethod setShippingZoon={setShippingZoon} />
 
-        <div className='w-full p-6 border border-gray-200 rounded-lg shadow-sm bg-white flex flex-col gap-4'>
-          <Form />
-          <ShippingMethod setShippingZoon={setShippingZoon} />
+            {/* <Button label={'অর্ডার কনফার্ম করুন'} onClick={() => placeOrder(product.id)} loading={orderLoading} disabled={orderLoading} /> */}
 
-          <Button label={'অর্ডার কনফার্ম করুন'} onClick={() => placeOrder(product.id)} loading={orderLoading} disabled={orderLoading} />
-        </div>
-        <div>
-          <div className='w-full p-4 border border-gray-200 rounded-lg shadow-sm bg-white mb-6'>
-            <CartItems cart={cart} setCart={setCart} shippingZoon={shippingZoon} />
+            <input className=' relative flex justify-center items-center gap-2 bg-primary border border-primary text-md py-3 font-bold text-white
+          disabled:opacity-70 
+          disabled:cursor-not-allowed
+          rounded-lg
+          hover:opacity-80
+          transition
+          px-4
+          w-full' type="submit" value='অর্ডার কনফার্ম করুন' />
           </div>
+          <div>
+            <div className='w-full p-4 border border-gray-200 rounded-lg shadow-sm bg-white mb-6'>
+              <CartItems cart={cart} setCart={setCart} shippingZoon={shippingZoon} />
+            </div>
+          </div>
+
         </div>
-      </div>
+      </form>
     </Container>
   )
 }

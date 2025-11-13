@@ -4,12 +4,14 @@ import toast from 'react-hot-toast'
 import { FaTrash } from 'react-icons/fa'
 import { FaRegTrashCan } from 'react-icons/fa6'
 import { RxCross1 } from 'react-icons/rx'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import NoCartItem from '../../pages/Checkout/NoCartItem'
+import Swal from 'sweetalert2'
 const CartModal = ({ product }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [cart, setCart] = useState([]);
     const deliveryCharges = 50
+    const navigate = useNavigate()
 
     const removeFromCart = (productId) => {
         const updatedCart = cart.filter(item => item.id !== productId)

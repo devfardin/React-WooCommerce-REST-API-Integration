@@ -2,14 +2,10 @@ import axios from "axios";
 import OAuth from "oauth-1.0a";
 import CryptoJS from "crypto-js";
 
-
 // WooCommerce credentials
 const baseURL = import.meta.env.VITE_BASEURL_URL;
 const consumerKey = import.meta.env.VITE_CONSUMERKEY_KEY;
 const consumerSecret = import.meta.env.VITE_CONSUMERSECRET_KEY;
-
-
-// WooCommerce store details
 
 // Create OAuth instance
 const oauth = new OAuth({
@@ -28,27 +24,27 @@ const wooAPI = axios.create({
   },
 });
 
-// Helper function to sign URL with OAuth
-function signUrl(url, method = "GET", data = {}) {
-  const requestData = { url, method, data };
+// ✅ Fixed: don't include `data` in signUrl for POST/PUT — only use URL + method
+function signUrl(url, method = "GET") {
+  const requestData = { url, method };
   const oauthParams = oauth.authorize(requestData);
   const params = new URLSearchParams(oauthParams).toString();
   return `${url}?${params}`;
 }
 
-// Simple request function usable anywhere
+// ✅ Fixed POST handler — keep your structure unchanged
 export async function wooRequest(endpoint, method = "GET", data = {}) {
   const url = `${baseURL}${endpoint}`;
-  const signedUrl = signUrl(url, method, data);
+  const signedUrl = signUrl(url, method);
 
   if (method === "GET") {
-    return wooAPI.get(signedUrl);
+    return await wooAPI.get(signedUrl);
   } else if (method === "POST") {
-    return wooAPI.post(signedUrl, data);
+    return await wooAPI.post(signedUrl, data); // now sends JSON body correctly
   } else if (method === "PUT") {
-    return wooAPI.put(signedUrl, data);
+    return await wooAPI.put(signedUrl, data);
   } else if (method === "DELETE") {
-    return wooAPI.delete(signedUrl);
+    return await wooAPI.delete(signedUrl);
   }
 }
 
