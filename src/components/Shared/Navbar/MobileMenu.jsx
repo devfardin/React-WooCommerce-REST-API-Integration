@@ -9,38 +9,34 @@ import { LiaShoppingBagSolid } from "react-icons/lia";
 
 // Menu items for mobile
 const mobileMenuItems = [
-  { label: 'Home', link: '/' },
-  { label: 'Categories', link: '/categories' },
-  { label: 'Products', link: '/products' },
-  { label: 'About', link: '/about' },
-  { label: 'Contact', link: '/contact' },
-  { label: 'Login', link: '/login' },
-  { label: 'Sign Up', link: '/signup' }
+    { label: 'Home', link: '/' },
+    { label: 'Shop', link: '/shop' },
+    { label: 'Check Out', link: '/checkout' },
 ];
 
 const MobileMenu = () => {
     const [isOpen, setIsOpen] = useState(false);
     const location = useLocation();
-    
+
     const toggleMenu = () => setIsOpen(!isOpen);
-    
+
     const closeMenu = useCallback(() => {
         setIsOpen(false);
     }, []);
-    
+
     useEffect(() => {
         const handleEscKey = (event) => {
             if (event.key === "Escape") {
                 closeMenu();
             }
         };
-        
+
         const handleClickOutside = (event) => {
             const menu = document.getElementById("mobile-menu");
             const trigger = document.getElementById("menu-trigger");
             const closeBtn = document.getElementById("menu-close");
             const target = event.target;
-            
+
             if (
                 menu &&
                 target instanceof Node &&
@@ -54,13 +50,13 @@ const MobileMenu = () => {
                 closeMenu();
             }
         };
-        
+
         if (isOpen) {
             document.addEventListener("keydown", handleEscKey);
             document.addEventListener("mousedown", handleClickOutside);
             document.body.style.overflow = 'hidden';
         }
-        
+
         return () => {
             document.removeEventListener("keydown", handleEscKey);
             document.removeEventListener("mousedown", handleClickOutside);
@@ -84,7 +80,7 @@ const MobileMenu = () => {
 
             {/* Backdrop Overlay */}
             <div
-                className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 z-40 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+                className={`fixed inset-0 bg-black/75 backdrop-blur-xs bg-opacity-50 transition-opacity duration-300 z-40 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"
                     }`}
                 onClick={closeMenu}
                 aria-hidden="true"
@@ -108,7 +104,7 @@ const MobileMenu = () => {
                             className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-all duration-200"
                             aria-label="Close menu"
                         >
-                            <RxCross1 className="text-2xl text-neutral-600"/>
+                            <RxCross1 className="text-2xl text-neutral-600" />
                         </button>
                     </div>
 
@@ -120,11 +116,10 @@ const MobileMenu = () => {
                                     <Link
                                         to={item.link}
                                         onClick={closeMenu}
-                                        className={`flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${
-                                            location.pathname === item.link
+                                        className={`flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${location.pathname === item.link
                                                 ? "bg-primary text-white"
                                                 : "text-gray-700 hover:bg-gray-100 hover:text-primary"
-                                        }`}
+                                            }`}
                                     >
                                         <span className="font-medium">{item.label}</span>
                                         <GoArrowUpRight className="text-lg" />
@@ -149,9 +144,9 @@ const MobileMenu = () => {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <Link
-                            to="/cart"
+                            to="/checkout"
                             onClick={closeMenu}
                             className="flex items-center justify-center gap-2 w-full bg-primary text-white py-3 rounded-lg hover:bg-primary/90 transition-colors"
                         >

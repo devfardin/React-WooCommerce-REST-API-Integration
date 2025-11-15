@@ -8,10 +8,8 @@ import { LiaShoppingBagSolid } from "react-icons/lia";
 
 const menuItems = [
   { label: 'Home', link: '/' },
-  { label: 'Categories', link: '/categories' },
-  { label: 'Products', link: '/products' },
-  { label: 'About', link: '/about' },
-  { label: 'Contact', link: '/contact' }
+  { label: 'Shop', link: '/shop' },
+  { label: 'Check Out', link: '/checkout' },
 ];
 
 const Navbar = () => {

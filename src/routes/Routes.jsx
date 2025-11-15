@@ -5,11 +5,7 @@ import Single from '../pages/single/single'
 import ErrorPage from '../pages/ErrorPage'
 import CheckOut from '../pages/Checkout/CheckOut'
 import CategoryProducts from '../pages/Categories/CategoryProducts'
-// import Login from '../pages/Login/Login'
-// import SignUp from '../pages/SignUp/SignUp'
-// import RoomDetails from '../components/RoomDetails/RoomDetails'
-// import PrivateRoute from '../components/Shared/PrivateRoute'
-// import {  getRoom } from '../apis/rooms'
+import Products from '../pages/Products/Products'
 
 
 export const router = createBrowserRouter([
@@ -33,6 +29,10 @@ export const router = createBrowserRouter([
       {
         path:'category/:slug',
         element: <CategoryProducts/>
+      },
+      {
+        path:'shop',
+        element: <Products/>
       }
     ],
   },
