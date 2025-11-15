@@ -3,7 +3,6 @@ import './index.css'
 import { RouterProvider } from 'react-router-dom'
 // import AuthProvider from './providers/AuthProvider'
 import { router } from './routes/Routes'
-import { Toaster } from 'react-hot-toast'
 import { Bounce, ToastContainer } from 'react-toastify'
 
 ReactDOM.createRoot(document.getElementById('root')).render(

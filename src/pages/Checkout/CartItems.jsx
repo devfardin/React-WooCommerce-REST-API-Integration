@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 // import toast from 'react-hot-toast';
 import { FaRegTrashCan } from 'react-icons/fa6'
+import { Link } from 'react-router';
 import { toast } from 'react-toastify';
 
 const CartItems = ({ shippingZoon, setCart, cart }) => {
@@ -58,7 +59,7 @@ const CartItems = ({ shippingZoon, setCart, cart }) => {
                                                 alt={item.name}
                                                 className="w-16 h-16 object-fill rounded-lg"
                                             />
-                                            <h3 className="text-base font-medium">{item.name}</h3>
+                                            <Link to={`/details/${item?.id}`} className="text-base font-medium">{item.name}</Link>
                                         </div>
                                     </td>
                                     <td className="py-4 px-2 font-medium">{parseFloat(item.price).toFixed(0)}  ৳</td>

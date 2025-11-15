@@ -38,15 +38,15 @@ const Single = () => {
 
     return (
         <Container>
-            <div className="py-8">
+            <div className="pb-8">
                 {/* Product Details Section */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
                     {/* Left Column - Product Images */}
-                    <div className="space-y-4 rounded-lg bg-white p-2">
-                        {/* Main Image */}
-
-                        <ImageThumbails images={images} />
-
+                    <div>
+                        <div className="space-y-4 rounded-lg bg-white p-2">
+                            {/* Main Image */}
+                            <ImageThumbails images={images} />
+                        </div>
                     </div>
 
                     {/* Right Column - Product Details */}
@@ -97,23 +97,21 @@ const Single = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                {/* Product Description Section */}
-                <div className="border-t pt-8">
-                    <div className="mb-6">
-                        <button className="bg-blue-500 text-white px-6 py-2 rounded-full font-medium">
-                            Description
-                        </button>
-                    </div>
+                        {/* Product Description Section */}
+                        {product.description && (
+                            <div className="space-y-3 rounded-lg bg-white p-6 mt-6">
+                                <h2 className="text-primary text-xl py-2 font-bold">
+                                    Description
+                                </h2>
 
-                    {product.description && (
-                        <div
-                            className="prose prose-lg max-w-none  leading-7"
-                            dangerouslySetInnerHTML={{ __html: product.description }}
-                        />
-                    )}
+                                <div
+                                    className="prose prose-lg max-w-none  leading-7"
+                                    dangerouslySetInnerHTML={{ __html: product.description }}
+                                />
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </Container>

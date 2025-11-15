@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import Container from '../../components/Shared/Container';
 import wooRequest from '../../apis/wooAPI';
-import toast from 'react-hot-toast';
 import ShippingMethod from './ShippingMethod';
 import CartItems from './CartItems';
 import NoCartItem from './NoCartItem';
@@ -13,7 +12,6 @@ import { useNavigate } from 'react-router';
 const CheckOut = () => {
   const [loading, setLoading] = useState(false)
   const [cart, setCart] = useState([])
-  const [errorMessage, setErrorMessage] = useState('')
   const navigate = useNavigate();
   const [shippingZoon, setShippingZoon] = useState([
     {
@@ -47,27 +45,27 @@ const CheckOut = () => {
       Swal.fire({
         position: "top",
         icon: "error",
-        title: 'Please fill name field',
+        title: '⚠️ অনুগ্রহ করে আপনার নাম দিন।',
         showConfirmButton: false,
-        timer: 1500
+        timer: 2000
       });
       return;
     } else if (!mobile) {
       Swal.fire({
         position: "top",
         icon: "error",
-        title: 'Please fill mobile field',
+        title: '⚠️ অনুগ্রহ করে আপনার মোবাইল নম্বর দিন।',
         showConfirmButton: false,
-        timer: 1500
+        timer: 2000
       });
       return;
     } else if (!address) {
       Swal.fire({
         position: "top",
         icon: "error",
-        title: 'Please fill address field',
+        title: '⚠️ অনুগ্রহ করে আপনার ঠিকানা দিন।',
         showConfirmButton: false,
-        timer: 1500
+        timer: 2000
       });
       return;
     };
@@ -76,7 +74,8 @@ const CheckOut = () => {
     const orderDetails = {
       "payment_method": "cod",
       "payment_method_title": "Cash on Delivery",
-      "set_paid": false,
+      "set_paid": true,
+       "status": "processing",
       "billing": {
         "first_name": name,
         "address_1": address,
@@ -93,7 +92,10 @@ const CheckOut = () => {
           "method_title": "Flat Rate",
           "total": shippingZoon?.settings?.cost?.value == undefined ? shippingZoon[0]?.settings?.cost?.value : shippingZoon?.settings?.cost?.value,
         }
-      ]
+      ],
+      'meta_data': [
+    { key: "order_origin", value: "React Frontend" }
+  ]
     }
 
     try {

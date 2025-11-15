@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 const ProductCard = ({ product }) => {
     const [cart, setCart] = useState([]);
-     const navigate = useNavigate();
+    const navigate = useNavigate();
 
 
     const addProductsToCart = (product) => {
@@ -36,7 +36,7 @@ const ProductCard = ({ product }) => {
     return (
         <div className='relative group border border-border rounded-xl shadow bg-white'>
             {/* Product Image */}
-            <Link to={`details/${product?.id}`} className='overflow-hidden block'>
+            <Link to={`/details/${product?.id}`} className='overflow-hidden block'>
                 <img
                     src={product?.images[0]?.src}
                     alt={product?.name}
@@ -64,9 +64,9 @@ const ProductCard = ({ product }) => {
 
                 </div>
                 <div className='mt-3 flex flex-col'>
-                    
+
                     {/* Cart Modal  */}
-                    <CartModal product={product}/>
+                    <CartModal product={product} />
 
                     <button onClick={() => addProductsToCart(product)}
                         className='bg-primary text-white px-2 py-1.5 cursor-pointer transition-colors duration-300 w-full block text-center text-lg font-medium rounded-b-xl'>অর্ডার করুন</button>

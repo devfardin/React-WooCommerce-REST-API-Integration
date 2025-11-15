@@ -37,9 +37,40 @@ export async function wooRequest(endpoint, method = "GET", data = {}) {
   const url = `${baseURL}${endpoint}`;
   const signedUrl = signUrl(url, method);
 
+  // Handle GET requests with query parameters
   if (method === "GET") {
-    return await wooAPI.get(signedUrl);
-  } else if (method === "POST") {
+  const [path, queryString] = endpoint.split("?");
+
+  const urlNoParams = `${baseURL}${path}`;
+
+  // Parse query params from endpoint
+  let queryParams = {};
+  if (queryString) {
+    queryString.split("&").forEach(pair => {
+      const [key, value] = pair.split("=");
+      queryParams[key] = value;
+    });
+  }
+
+  // Include query params in OAuth signing
+  const requestData = {
+    url: urlNoParams,
+    method: "GET",
+    data: queryParams
+  };
+
+  const oauthParams = oauth.authorize(requestData);
+
+  // Final query = original params + OAuth params
+  const finalQuery = new URLSearchParams({
+    ...queryParams,
+    ...oauthParams
+  }).toString();
+
+  const finalUrl = `${urlNoParams}?${finalQuery}`;
+
+  return await wooAPI.get(finalUrl);
+} else if (method === "POST") {
     return await wooAPI.post(signedUrl, data); // now sends JSON body correctly
   } else if (method === "PUT") {
     return await wooAPI.put(signedUrl, data);

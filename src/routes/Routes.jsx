@@ -4,6 +4,7 @@ import Home from '../pages/Home/Home'
 import Single from '../pages/single/single'
 import ErrorPage from '../pages/ErrorPage'
 import CheckOut from '../pages/Checkout/CheckOut'
+import CategoryProducts from '../pages/Categories/CategoryProducts'
 // import Login from '../pages/Login/Login'
 // import SignUp from '../pages/SignUp/SignUp'
 // import RoomDetails from '../components/RoomDetails/RoomDetails'
@@ -26,14 +27,13 @@ export const router = createBrowserRouter([
         element: <Single/>
       },
       {
-        path:'checkout/:id',
+        path:'checkout',
         element: <CheckOut/>
       },
       {
-        path:'checkout',
-        element: <CheckOut/>
+        path:'category/:slug',
+        element: <CategoryProducts/>
       }
-     
     ],
   },
   // { path: '/login', element: <Login /> },
