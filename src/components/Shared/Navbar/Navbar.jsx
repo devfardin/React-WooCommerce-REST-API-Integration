@@ -12,7 +12,7 @@ const menuItems = [
   { label: 'Check Out', link: '/checkout' },
 ];
 
-const Navbar = () => {
+const Navbar = ({siteData}) => {
   const location = useLocation();
 
   return (
@@ -28,11 +28,13 @@ const Navbar = () => {
                 <MobileMenu />
               </div>
               <Link to='/'>
-                <img
+                {/* <img
                   className='w-32'
                   src={logoImg}
                   alt='logo'
-                />
+                /> */}
+                <img src={siteData.site_logo} className='w-32'
+                  alt={siteData.site_title} />
               </Link>
             </div>
 

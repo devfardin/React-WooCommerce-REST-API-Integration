@@ -34,13 +34,13 @@ const ProductCard = ({ product }) => {
         }
     }
     return (
-        <div className='relative group border border-border rounded-xl shadow bg-white'>
+        <div className='relative group border border-border rounded-xl shadow bg-white overflow-hidden'>
             {/* Product Image */}
             <Link to={`/details/${product?.id}`} className='overflow-hidden block'>
                 <img
                     src={product?.images[0]?.src}
                     alt={product?.name}
-                    className='w-full lg:h-64 md:h-60 h-52 object-fill transition-transform duration-300 group-hover:scale-110'
+                    className='w-full lg:h-64 md:h-60 h-52 object-fill rounded-t-xl transition-transform duration-300 group-hover:scale-110 hover:rounded-t-xl overflow-hidden'
                 />
             </Link>
 
