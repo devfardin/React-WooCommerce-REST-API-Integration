@@ -33,7 +33,7 @@ const Products = () => {
     return (
         <Container>
             <div className=" mb-3">
-                <SectionTitle title='All products' highlight='pagination' />
+                <SectionTitle title='All' highlight='Products' />
             </div>
             <div className="grid 2xl:grid-cols-5  xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-5">
                 {products?.map((product, index) => (
