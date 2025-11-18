@@ -3,7 +3,7 @@ import OAuth from "oauth-1.0a";
 import CryptoJS from "crypto-js";
 
 // WooCommerce credentials
-const baseURL = import.meta.env.VITE_BASEURL_URL;
+const baseURL = `${import.meta.env.VITE_BASEURL_URL}/wc/v3`;
 const consumerKey = import.meta.env.VITE_CONSUMERKEY_KEY;
 const consumerSecret = import.meta.env.VITE_CONSUMERSECRET_KEY;
 

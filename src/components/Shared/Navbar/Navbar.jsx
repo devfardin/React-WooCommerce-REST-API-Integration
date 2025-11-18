@@ -14,6 +14,9 @@ const menuItems = [
 const Navbar = ({siteData}) => {
   const location = useLocation();
 
+  console.log(siteData);
+  
+
   return (
     <div className='w-full bg-white shadow-sm sticky top-0 z-20'>
       {/* Main Header */}

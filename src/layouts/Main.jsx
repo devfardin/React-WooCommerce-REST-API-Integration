@@ -7,7 +7,7 @@ const Main = () => {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     setLoading(true);
-    fetch('http://e-commerce.local/wp-json/wp-react-connect/v1/hello')
+    fetch(`${import.meta.env.VITE_BASEURL_URL}/wp-react-connect/v1/store-settings`)
       .then(res => res.json())
       .then(data => {
         setSiteData(data);

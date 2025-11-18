@@ -8,6 +8,7 @@ import Form from './Form';
 import Swal from 'sweetalert2';
 import { ClipLoader } from 'react-spinners';
 import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 const CheckOut = () => {
   const [loading, setLoading] = useState(false)
@@ -75,7 +76,7 @@ const CheckOut = () => {
       "payment_method": "cod",
       "payment_method_title": "Cash on Delivery",
       "set_paid": true,
-       "status": "processing",
+      "status": "processing",
       "billing": {
         "first_name": name,
         "address_1": address,
@@ -94,8 +95,8 @@ const CheckOut = () => {
         }
       ],
       'meta_data': [
-    { key: "order_origin", value: "React Frontend" }
-  ]
+        { key: "order_origin", value: "React Frontend" }
+      ]
     }
 
     try {
@@ -105,7 +106,7 @@ const CheckOut = () => {
         setLoading(false)
         Swal.fire({
           icon: "success",
-          title: ' আপনার অর্ডার সফলভাবে সম্পন্ন হয়েছে!',
+          title: 'আপনার অর্ডার সফলভাবে সম্পন্ন হয়েছে!',
           text: '💬 ধন্যবাদ আপনার অর্ডারের জন্য! আমাদের প্রতিনিধি খুব শীঘ্রই আপনাকে ফোন করে অর্ডারটি নিশ্চিত করবেন। অনুগ্রহ করে আপনার ফোনটি সচল রাখুন।',
         });
         localStorage.removeItem('cart');
@@ -114,10 +115,25 @@ const CheckOut = () => {
       }
     } catch (error) {
       setLoading(false)
-      console.error("Error placing order:", error);
+      Swal.fire({
+        icon: "error",
+        title: 'অর্ডার ব্যর্থ হয়েছে!',
+        text: 'দুঃখিত! আপনার অর্ডারটি সম্পন্ন করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন অথবা আমাদের সাপোর্ট টিমের সাথে যোগাযোগ করুন।',
+        confirmButtonText: "যোগাযোগ করুন",
+        preConfirm: () => {
+          // add whatsapp link
+          window.open(
+            '/home',
+            '_blank' // <- This is what makes it open in a new window.
+          );
+        }
+      });
+      console.error("Error placing order", error);
 
     }
   }
+
+  // <div><a class="px-4 py-2 mt-4 inline-block rounded text-xl w-content text-white font-medium bg-primary" href="#" autofocus> যোগাযোগ করুন </a> </div> 
 
 
   if (cart.length === 0) return <NoCartItem />
