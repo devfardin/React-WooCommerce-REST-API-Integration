@@ -37,10 +37,8 @@ const ErrorPage = () => {
         <p className='text-gray-500 mb-8 leading-relaxed'>
           We encountered an unexpected error. Don't worry, it's not your fault!
         </p>
-
         {/* Action Buttons */}
         
-
           <Button 
             label='Take Me Home' 
             onClick={() => navigate('/')} 

@@ -1,6 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
 import Container from '../Container'
-import logoImg from '../../../assets/images/logo.png'
 import { FaPhone } from "react-icons/fa6";
 import { IoSearchSharp } from "react-icons/io5";
 import MobileMenu from './MobileMenu';
@@ -25,10 +24,10 @@ const Navbar = ({siteData}) => {
             {/* Left - Logo (with mobile menu on tablet) */}
             <div className='flex items-center gap-3 col-span-1'>
               <div className='lg:hidden'>
-                <MobileMenu />
+                <MobileMenu siteData={siteData} />
               </div>
               <Link to='/'>
-                <img src={siteData.site_logo} className='w-32'
+                <img src={siteData.site_logo} className='w-24 lg:w-32'
                   alt={siteData.site_title} />
               </Link>
             </div>

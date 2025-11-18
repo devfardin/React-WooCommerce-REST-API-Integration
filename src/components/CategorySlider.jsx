@@ -22,7 +22,7 @@ const CategorySlider = () => {
                 setCategories(response.data);
                 setLoading(false)
             } catch (error) {
-                toast.error("Error fetching categories:", error)
+                toast.error("Error fetching categories", error)
             }
         };
         fetchCategories();

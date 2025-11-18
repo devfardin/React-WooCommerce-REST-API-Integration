@@ -8,12 +8,11 @@ import SectionTitle from "../../components/Shared/SectionTitle";
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-
   useEffect(() => {
     setLoading(true)
     const fetchProducts = async () => {
       try {
-        const response = await wooRequest('/products');
+        const response = await wooRequest('/products?per_page=20');
         setProducts(response.data);
         setLoading(false)
       } catch (error) {

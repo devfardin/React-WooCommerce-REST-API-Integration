@@ -14,7 +14,7 @@ const mobileMenuItems = [
     { label: 'Check Out', link: '/checkout' },
 ];
 
-const MobileMenu = () => {
+const MobileMenu = ({ siteData }) => {
     const [isOpen, setIsOpen] = useState(false);
     const location = useLocation();
 
@@ -97,7 +97,9 @@ const MobileMenu = () => {
                 <div className="h-full overflow-y-auto">
                     {/* Header */}
                     <div className="flex justify-between items-center p-6 border-b border-gray-200">
-                        <img alt="Logo" src={logo} className="h-auto w-32" />
+
+                        <img src={siteData.site_logo} className='h-auto w-24'
+                            alt={siteData.site_title} />
                         <button
                             id="menu-close"
                             onClick={closeMenu}
@@ -117,8 +119,8 @@ const MobileMenu = () => {
                                         to={item.link}
                                         onClick={closeMenu}
                                         className={`flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${location.pathname === item.link
-                                                ? "bg-primary text-white"
-                                                : "text-gray-700 hover:bg-gray-100 hover:text-primary"
+                                            ? "bg-primary text-white"
+                                            : "text-gray-700 hover:bg-gray-100 hover:text-primary"
                                             }`}
                                     >
                                         <span className="font-medium">{item.label}</span>
