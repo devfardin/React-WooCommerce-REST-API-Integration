@@ -12,7 +12,7 @@ const Home = () => {
     setLoading(true)
     const fetchProducts = async () => {
       try {
-        const response = await wooRequest('/products?per_page=20');
+        const response = await wooRequest('/products?per_page=10');
         setProducts(response.data);
         setLoading(false)
       } catch (error) {
