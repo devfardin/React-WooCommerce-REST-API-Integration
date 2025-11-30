@@ -14,7 +14,7 @@ const menuItems = [
 const Navbar = ({siteData}) => {
   const location = useLocation();
 
-  console.log(siteData);
+  // console.log(siteData);
   
 
   return (

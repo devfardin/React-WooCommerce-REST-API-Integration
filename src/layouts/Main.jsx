@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom'
 import Navbar from '../components/Shared/Navbar/Navbar'
 import Footer from '../components/Shared/Footer/Footer'
 import { useEffect, useState } from 'react'
+import { initFacebookPixel } from '../facebookPixel'
 const Main = () => {
   const [siteData, setSiteData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -14,6 +15,11 @@ const Main = () => {
         setLoading(false);
       })
   }, [] )
+
+  useEffect(() => {
+    initFacebookPixel();
+  }, []);
+
   
   return (
     <div>

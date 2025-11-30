@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { useEffect, useState } from "react";
 import wooRequest from "../../apis/wooAPI";
 import Container from "../../components/Shared/Container"
@@ -5,6 +6,7 @@ import Loader from "../../components/Shared/Loader";
 import CategorySlider from "../../components/CategorySlider";
 import ProductCard from "../../components/Shared/ProductCard";
 import SectionTitle from "../../components/Shared/SectionTitle";
+import Ip from './Ip';
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -16,6 +18,7 @@ const Home = () => {
         setProducts(response.data);
         setLoading(false)
       } catch (error) {
+        toast.error("Something went wrong");
         console.error("Error fetching products:", error);
       }
     };
@@ -35,6 +38,10 @@ const Home = () => {
             <ProductCard product={product} key={index} />
           ))}
         </div>
+      </div>
+      <div>
+        <Ip/>
+
       </div>
     </Container>
   )

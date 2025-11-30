@@ -14,6 +14,8 @@ const CheckOut = () => {
   const [loading, setLoading] = useState(false)
   const [cart, setCart] = useState([])
   const navigate = useNavigate();
+  // Order blocking configuration - modify these values as needed
+  const ORDER_BLOCK_CONFIG = 1;
   const [shippingZoon, setShippingZoon] = useState([
     {
       title: "ঢাকা সিটির বাহিরে",
@@ -40,6 +42,8 @@ const CheckOut = () => {
     const name = form.name.value;
     const mobile = form.mobile.value;
     const address = form.address.value;
+    const ip = await fetch('https://api.ipify.org?format=json');
+    const ip_address = await ip.json();
 
     // Check customer data are exist
     if (!name) {
@@ -71,6 +75,43 @@ const CheckOut = () => {
       return;
     };
 
+
+    const response = await wooRequest('/orders', "GET");
+    
+    const orderExist = response.data?.find(order => {
+      if (order.status !== "processing") {
+        return false;
+      }
+
+      const customerIpMeta = order.meta_data?.find(meta => meta.key === "customer_ip");
+      const orderDate = new Date(order.date_created);
+      const currentDate = new Date();
+      const timeDifference = currentDate - orderDate;
+      const blockDurationMs = (ORDER_BLOCK_CONFIG * 24 * 60 * 60 * 1000);
+      
+      const isWithinBlockPeriod = timeDifference <= blockDurationMs;
+      const ipMatch = customerIpMeta?.value === ip_address.ip;
+      const phoneMatch = order.billing.phone === mobile;
+      
+      return isWithinBlockPeriod && (ipMatch || phoneMatch);
+    });
+
+    if (orderExist) {
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: '⚠️ আপনার অর্ডার অপেক্ষা করা হয়েছে। অনুগ্রহ করে আপনার ফোন নম্বর পরিবর্তন করুন।',
+        showConfirmButton: false,
+        timer: 3000
+      });
+      return;
+    }
+
+
+
+
+
+
     // Customer Data structer here
     const orderDetails = {
       "payment_method": "cod",
@@ -81,6 +122,7 @@ const CheckOut = () => {
         "first_name": name,
         "address_1": address,
         "phone": mobile,
+
       },
       line_items: cart?.map(item => ({
         product_id: item?.id,
@@ -94,8 +136,10 @@ const CheckOut = () => {
           "total": shippingZoon?.settings?.cost?.value == undefined ? shippingZoon[0]?.settings?.cost?.value : shippingZoon?.settings?.cost?.value,
         }
       ],
+      'customer_ip_address': ip_address.ip,
       'meta_data': [
-        { key: "order_origin", value: "React Frontend" }
+        { key: "order_origin", value: "React Frontend" },
+        { key: "customer_ip", value: ip_address.ip }
       ]
     }
 
@@ -109,9 +153,9 @@ const CheckOut = () => {
           title: 'আপনার অর্ডার সফলভাবে সম্পন্ন হয়েছে!',
           text: '💬 ধন্যবাদ আপনার অর্ডারের জন্য! আমাদের প্রতিনিধি খুব শীঘ্রই আপনাকে ফোন করে অর্ডারটি নিশ্চিত করবেন। অনুগ্রহ করে আপনার ফোনটি সচল রাখুন।',
         });
-        localStorage.removeItem('cart');
-        setCart([]);
-        navigate('/')
+        // localStorage.removeItem('cart');
+        // setCart([]);
+        // navigate('/')
       }
     } catch (error) {
       setLoading(false)
@@ -123,7 +167,7 @@ const CheckOut = () => {
         preConfirm: () => {
           // add whatsapp link
           window.open(
-            '/home',
+            '/',
             '_blank' // <- This is what makes it open in a new window.
           );
         }
@@ -133,7 +177,22 @@ const CheckOut = () => {
     }
   }
 
-  // <div><a class="px-4 py-2 mt-4 inline-block rounded text-xl w-content text-white font-medium bg-primary" href="#" autofocus> যোগাযোগ করুন </a> </div> 
+  const [orders, setOrders] = useState([]);
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await wooRequest('/orders', "GET");
+        setOrders(response.data);
+      } catch (error) {
+        toast.error("Something went wrong while fetching orders");
+      }
+    }
+    fetchOrders()
+  }, [])
+
+
+  console.log(orders);
+
 
 
   if (cart.length === 0) return <NoCartItem />
