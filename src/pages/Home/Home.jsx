@@ -40,7 +40,6 @@ const Home = () => {
         </div>
       </div>
       <div>
-        <Ip/>
 
       </div>
     </Container>
