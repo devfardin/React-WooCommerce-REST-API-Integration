@@ -77,6 +77,8 @@ const CheckOut = () => {
 
 
     const response = await wooRequest('/orders', "GET");
+    console.log(response.data);
+    
     
     const orderExist = response.data?.find(order => {
       if (order.status !== "processing") {
@@ -100,9 +102,8 @@ const CheckOut = () => {
       Swal.fire({
         position: "top",
         icon: "error",
-        title: '⚠️ আপনার অর্ডার অপেক্ষা করা হয়েছে। অনুগ্রহ করে আপনার ফোন নম্বর পরিবর্তন করুন।',
-        showConfirmButton: false,
-        timer: 3000
+        title: '⚠️ আপনার অর্ডারটি বর্তমানে প্রক্রিয়াধীন রয়েছে। আপনি যদি আরও অর্ডার দিতে চান, অনুগ্রহ করে আমাদের সাপোর্ট টিমের সাথে যোগাযোগ করুন। তারা আপনাকে সহায়তা করবে। ধন্যবাদ।',
+        showConfirmButton: true,
       });
       return;
     }
@@ -153,9 +154,9 @@ const CheckOut = () => {
           title: 'আপনার অর্ডার সফলভাবে সম্পন্ন হয়েছে!',
           text: '💬 ধন্যবাদ আপনার অর্ডারের জন্য! আমাদের প্রতিনিধি খুব শীঘ্রই আপনাকে ফোন করে অর্ডারটি নিশ্চিত করবেন। অনুগ্রহ করে আপনার ফোনটি সচল রাখুন।',
         });
-        // localStorage.removeItem('cart');
-        // setCart([]);
-        // navigate('/')
+        localStorage.removeItem('cart');
+        setCart([]);
+        navigate('/')
       }
     } catch (error) {
       setLoading(false)
@@ -207,7 +208,7 @@ const CheckOut = () => {
             {/* <Button label={'অর্ডার কনফার্ম করুন'} onClick={() => placeOrder(product.id)} loading={orderLoading} disabled={orderLoading} /> */}
 
             <button disabled={loading} className=' relative flex justify-center items-center gap-2 bg-primary border border-primary text-md py-3
-            font-bold text-white disabled:opacity-70 disabled:cursor-not-allowed rounded hover:opacity-80 transition px-4 w-full' type="submit">  {
+            font-bold text-white disabled:opacity-70 disabled:cursor-not-allowed rounded hover:opacity-80 transition px-4 w-full cursor-pointer' type="submit">  {
                 loading ? <ClipLoader color="white" size={25} /> : 'অর্ডার কনফার্ম করুন'} </button>
           </div>
           <div>

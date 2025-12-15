@@ -6,7 +6,6 @@ import Loader from "../../components/Shared/Loader";
 import CategorySlider from "../../components/CategorySlider";
 import ProductCard from "../../components/Shared/ProductCard";
 import SectionTitle from "../../components/Shared/SectionTitle";
-import Ip from './Ip';
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
