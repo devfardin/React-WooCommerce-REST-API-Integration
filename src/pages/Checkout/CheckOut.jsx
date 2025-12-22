@@ -75,10 +75,8 @@ const CheckOut = () => {
       return;
     };
 
-
     const response = await wooRequest('/orders', "GET");
-    console.log(response.data);
-    
+  
     
     const orderExist = response.data?.find(order => {
       if (order.status !== "processing") {
@@ -107,10 +105,6 @@ const CheckOut = () => {
       });
       return;
     }
-
-
-
-
 
 
     // Customer Data structer here
@@ -190,9 +184,6 @@ const CheckOut = () => {
     }
     fetchOrders()
   }, [])
-
-
-  console.log(orders);
 
 
 

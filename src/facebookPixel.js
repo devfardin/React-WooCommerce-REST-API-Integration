@@ -1,6 +1,6 @@
 import ReactPixel from 'react-facebook-pixel';
 
-const pixelId = "836698955854410"; // replace with your real Pixel ID
+const pixelId = "380578364733134"; // replace with your real Pixel ID
 
 export const initFacebookPixel = () => {
   const options = {
