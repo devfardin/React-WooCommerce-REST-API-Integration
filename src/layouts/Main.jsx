@@ -16,9 +16,9 @@ const Main = () => {
       })
   }, [] )
 
-  useEffect(() => {
-    initFacebookPixel();
-  }, []);
+  // useEffect(() => {
+  //   initFacebookPixel();
+  // }, []);
 
   
   return (

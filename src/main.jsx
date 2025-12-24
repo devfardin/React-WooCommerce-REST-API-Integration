@@ -1,7 +1,6 @@
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import { RouterProvider } from 'react-router-dom'
-// import AuthProvider from './providers/AuthProvider'
 import { router } from './routes/Routes'
 import { Bounce, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
